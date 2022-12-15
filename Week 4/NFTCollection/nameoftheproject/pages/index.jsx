@@ -26,7 +26,7 @@ const Home = () => {
         .then(data => data.json())
         .catch(error => console.log('error', error))
     } else {
-      console.log('collectiong nfts')
+      console.log('collection nfts')
       const url = `${baseURL}/getNFTs/?owner=${wallet}&contractAddresses%5B%5D=${collection}`;
 
       nfts = await fetch(url, requestOptions)
