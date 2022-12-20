@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
+import { NFTCard } from '../components/nftCard'
 
 const Home = () => {
   const [wallet,setWalletAddress] = useState("")
@@ -42,6 +43,9 @@ const Home = () => {
 
   const fetchNFTsForCollection = async () => {
     if(collection.length){
+      var requestOptions = {
+        method: 'GET'
+      };
       // Alchemy API key
       const apiKey = 'zCCdyKuaWGrdenA1ZoXVs1ig1_Y9YZ';
 
@@ -59,23 +63,35 @@ const Home = () => {
       
       if(nfts){
         console.log("NFTs in collection: ",nfts)
+        setNFTs(nfts.nfts)
       }
     }
   }
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <input onChange={(e)=>{setWalletAddress(e.target.value)}} value={wallet} type={("text")} placeholder="Add your wallet address"></input>
-      <input onChange={(e)=>{setCollectionAddress(e.target.value)}} value={collection} type={("text")} placeholder="Add the collection address"></input>
-      <label><input onChange={(e) => {setFetchForCollection(e.target.checked)}} type={("checkbox")}></input>Fetch for collection</label>
-      <button onClick={
-          () => {
-            if(fetchForCollection){
-              fetchNFTsForCollection()
-            }else{
-              fetchNFTs()
+    <div className="flex flex-col items-center justify-center py-8 gap-y-3">
+      <div className="flex flex-col w-full justify-center items-center gap-y-2">
+        <input disabled={fetchForCollection} onChange={(e)=>{setWalletAddress(e.target.value)}} value={wallet} type={("text")} placeholder="Add your wallet address"></input>
+        <input onChange={(e)=>{setCollectionAddress(e.target.value)}} value={collection} type={("text")} placeholder="Add the collection address"></input>
+        <label className="text-gray-600 "><input onChange={(e) => {setFetchForCollection(e.target.checked)}} type={("checkbox")} className="mr-2"></input>Fetch for collection</label>
+        <button className={"disabled:bg-slate-500 text-white bg-blue-400 px-4 py-2 mt-3 rounded-sm w-1/5"} onClick={
+            () => {
+              if(fetchForCollection){
+                fetchNFTsForCollection()
+              }else{
+                fetchNFTs()
+              }
             }
-          }
-        }>Let's go</button>
+          }>Let's go</button>
+      </div>
+      <div className='flex flex-wrap gap-y-12 mt-4 w-5/6 gap-x-2 justify-center'>
+        {
+          NFTs.length && NFTs.map(nft => {
+            return (
+              <NFTCard nft={nft}></NFTCard>
+            )
+          })
+        }
+      </div>
     </div>
   )
 }
