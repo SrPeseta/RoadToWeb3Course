@@ -105,3 +105,8 @@ a {
     color-scheme: dark;
   }
 }
+
+/* ./styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
